@@ -5,7 +5,12 @@ App({
         let logs = wx.getStorageSync('logs') || []
         logs.unshift(Date.now())
         wx.setStorageSync('logs', logs)
-
+        wx.request({
+          url: 'https://nfls.io/user/csrf',
+          success: function(res) {
+            console.log(res.data)
+          }
+        })
         // 登录
         wx.login({
             success: res => {
