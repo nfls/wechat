@@ -4,19 +4,20 @@ const app = getApp()
 
 Page({
     data: {
+        "info": "加载中，咕咕咕"
     },
     onLoad: function () {
         wx.login({
             success: res => {
                 const self = this
-                this.requestAPI("user/weChatLogin", {"token": res.code}, "POST", function(data) {
+                getApp().requestAPI("user/weChatLogin", {"token": res.code}, "POST", function(data) {
                     if(data.code === 200) {
-                        self.requestAPI("user/current", null, "GET", function(data) {
-                            console.log(data)
+                        wx.redirectTo({
+                            url: '/pages/index/user'
                         })
                     } else {
-                        wx.navigateTo({
-                            url: '/page/index/login'
+                        wx.redirectTo({
+                            url: '/pages/index/login'
                         })
                     }
                     console.log(data)
@@ -25,7 +26,5 @@ Page({
 
             }
         })
-
     }
-
 })

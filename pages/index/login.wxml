@@ -8,7 +8,7 @@
                     <view class="weui-label">用户名</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <input class="weui-input" placeholder="请输入用户名"/>
+                    <input class="weui-input" bindinput="bindUsernameInput" placeholder="请输入用户名"/>
                 </view>
             </view>
             <view class="weui-cell weui-cell_input">
@@ -16,14 +16,14 @@
                     <view class="weui-label">密码</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <input class="weui-input" placeholder="请输入密码"/>
+                    <input class="weui-input" bindinput="bindPasswordInput" password placeholder="请输入密码"/>
                 </view>
             </view>
         </view>
         <view class="weui-cells__tips">请使用您的南外人账户登录。登录完成后将于您的微信绑定，下次打开将自动登录。</view>
 
         <view class="weui-btn-area">
-            <button class="weui-btn" type="primary" bindtap="showTopTips">登录</button>
+            <button class="weui-btn" type="primary" bindtap="login">登录</button>
         </view>
     </view>
 </view>

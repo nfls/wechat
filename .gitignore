@@ -54,3 +54,4 @@ fabric.properties
 .idea/modules.xml
 .idea/vcs.xml
 .idea/wechat.iml
+.DS_Store

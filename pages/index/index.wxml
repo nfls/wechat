@@ -1,0 +1,8 @@
+<view>
+    <view class="page__bd">
+        <view class="icon-box">
+            <icon type="waiting" size="93"></icon>
+        </view>
+        <text>{{info}}</text>
+    </view>
+</view>

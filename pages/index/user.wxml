@@ -1,0 +1,20 @@
+<view class="page">
+    <view class="page__bd">
+        <view class="weui-cells__title">个人信息</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell">
+                <view class="weui-cell__bd">用户名</view>
+                <view class="weui-cell__ft">{{username}}</view>
+            </view>
+            <view class="weui-cell">
+                <view class="weui-cell__bd">邮箱</view>
+                <view class="weui-cell__ft">{{email}}</view>
+            </view>
+            <view class="weui-cell">
+                <view class="weui-cell__bd">手机号</view>
+                <view class="weui-cell__ft">{{phone}}</view>
+            </view>
+        </view>
+        <view class="weui-cells__tips">如果你能进入本页面并看到正确的信息，则说明您的账户已成功绑定。然而并没有任何方式可以解除绑定。</view>
+    </view>
+</view>

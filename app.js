@@ -26,7 +26,7 @@ App({
                     var cookie = res.header["Set-Cookie"].split(";")[0].split("=")[1]
                     wx.setStorageSync("PHPSESSID", cookie)
                 }
-                success(data)
+                success(res.data)
             }
         })
     }
