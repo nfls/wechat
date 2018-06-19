@@ -1,0 +1,49 @@
+<import src="../../lib/wxParse/wxParse.wxml"/>
+<view>
+    <view class="page__bd">
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_select">
+                <view class="weui-cell__hd weui-cell__hd_in-select-after">
+                    <view class="weui-label">课堂</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker bindchange="bindCountryChange" value="{{clazIndex}}" range="{{classes}}">
+                        <view class="weui-select weui-select_in-select-after">{{classes[clazIndex]}}</view>
+                    </picker>
+                </view>
+            </view>
+        </view>
+        <view class="weui-cells__title">老师</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="markdown">
+                <template is="wxParse" data="{{wxParseData:teacher.nodes}}"/>
+            </view>
+        </view>
+        <view class="weui-cells__title">公告</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="markdown">
+                <template is="wxParse" data="{{wxParseData:announcement.nodes}}"/>
+            </view>
+        </view>
+
+        <view class="weui-panel" wx:for="{{detail.notices}}">
+            <view class="weui-panel__bd">
+                <view class="weui-media-box weui-media-box_text">
+                    <!--<view class="weui-media-box__title weui-media-box__title_in-text">标题一</view>-->
+                    <view class="weui-media-box__desc">{{item.content}}</view>
+
+                    <view class="weui-cells__title" wx:if="{{item.attachment.length > 0}}">附件</view>
+                    <view class="weui-cells weui-cells_after-title" wx:if="{{item.attachment.length > 0}}" wx:for="{{item.attachment}}" wx:for-item="attachment">
+                        <view class="weui-cell">
+                            <view class="weui-cell__bd">{{attachment.name}}</view>
+                        </view>
+                    </view>
+                    <view class="weui-media-box__info">
+                        <view class="weui-media-box__info__meta">{{item.time}}</view>
+                        <view class="weui-media-box__info__meta" wx:if="{{item.deadline}}">{{item.deadline}}</view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

@@ -13,7 +13,7 @@ Page({
                 getApp().requestAPI("user/weChatLogin", {"token": res.code}, "POST", function(data) {
                     if(data.code === 200) {
                         wx.redirectTo({
-                            url: '/pages/index/user'
+                            url: '/pages/blackboard/index'
                         })
                     } else {
                         wx.redirectTo({

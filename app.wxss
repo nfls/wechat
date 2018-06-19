@@ -1,2 +1,3 @@
 /**app.wxss**/
 @import "lib/weui.wxss";
+@import "lib/wxParse/wxParse.wxss";
