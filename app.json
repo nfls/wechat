@@ -1,9 +1,10 @@
 {
   "pages": [
+    "pages/user/info",
+    "pages/user/login",
     "pages/index/index",
-    "pages/index/login",
-    "pages/index/user",
-    "pages/blackboard/index"
+    "pages/school/blackboard",
+    "pages/school/pastpaper"
   ],
   "window": {
     "backgroundTextStyle": "light",

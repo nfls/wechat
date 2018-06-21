@@ -13,11 +13,11 @@ Page({
                 getApp().requestAPI("user/weChatLogin", {"token": res.code}, "POST", function(data) {
                     if(data.code === 200) {
                         wx.redirectTo({
-                            url: '/pages/blackboard/index'
+                            url: '/pages/school/pastpaper'
                         })
                     } else {
                         wx.redirectTo({
-                            url: '/pages/index/login'
+                            url: '/pages/user/login'
                         })
                     }
                     console.log(data)
