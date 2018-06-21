@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/index/index",
     "pages/user/info",
     "pages/user/login",
-    "pages/index/index",
     "pages/school/blackboard",
     "pages/school/pastpaper"
   ],
