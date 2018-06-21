@@ -1,14 +1,15 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
     "pages/index/login",
     "pages/index/user",
     "pages/blackboard/index"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#f8f8f8",
+    "backgroundColor": "#f8f8f8",
     "navigationBarTitleText": "南外人黑板",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   }
 }

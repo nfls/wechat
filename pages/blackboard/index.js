@@ -4,7 +4,7 @@ const moment = require('../../lib/moment-with-locales.min');
 Page({
     data: {
         classes: [],
-        clazIndex: 0,
+        clazIndex: 1,
         clazInfo: [],
         datail: [],
         teacher: []

@@ -1,5 +1,5 @@
 <import src="../../lib/wxParse/wxParse.wxml"/>
-<view>
+<view style="background-color: #f8f8f8">
     <view class="page__bd">
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_select">
@@ -19,31 +19,32 @@
                 <template is="wxParse" data="{{wxParseData:teacher.nodes}}"/>
             </view>
         </view>
-        <view class="weui-cells__title">公告</view>
-        <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cells__title" >公告</view>
+        <view class="weui-cells weui-cells_after-title" style="margin-bottom: 30px;">
             <view class="markdown">
                 <template is="wxParse" data="{{wxParseData:announcement.nodes}}"/>
             </view>
         </view>
 
-        <view class="weui-panel" wx:for="{{detail.notices}}">
-            <view class="weui-panel__bd">
-                <view class="weui-media-box weui-media-box_text">
-                    <!--<view class="weui-media-box__title weui-media-box__title_in-text">标题一</view>-->
-                    <view class="weui-media-box__desc">{{item.content}}</view>
-                    <view class="weui-media-box__info" wx:if="{{item.deadline}}">
-                        <view class="weui-media-box__info__meta">截止日期：{{item.deadline}}</view>
-                    </view>
-                    <view class="weui-media-box__info">
-                        <view class="weui-media-box__info__meta">发布日期：{{item.time}}</view>
-                    </view>
-                    <view class="weui-cells__title" wx:if="{{item.attachment.length > 0}}">附件</view>
-                    <view class="weui-cells weui-cells_after-title" wx:if="{{item.attachment.length > 0}}" wx:for="{{item.attachment}}" wx:for-item="attachment">
-                        <view class="weui-cell">
-                            <view class="weui-cell__bd"><button size="mini" bindtap="preview" data-name="{{attachment.href}}">{{attachment.name}}</button></view>
-                        </view>
+        <view class="page__bd" wx:for="{{detail.notices}}">
+            <view class="weui-cells__title">{{item.time}}</view>
+            <view class="weui-form-preview">
+                <view style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
+                    {{item.content}}
+                </view>
+                <view class="weui-form-preview__bd" wx:if="{{item.deadline}}">
+                    <view class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">截止日期</view>
+                        <view class="weui-form-preview__value">{{item.deadline}}</view>
                     </view>
                 </view>
+                <view class="weui-cells__title" wx:if="{{item.attachment.length > 0}}">附件</view>
+                <view style="margin-right: 15px; margin-left: 15px;">
+                    <view wx:if="{{item.attachment.length > 0}}" wx:for="{{item.attachment}}" wx:for-item="attachment" style="">
+                        <button size="mini" bindtap="preview" data-name="{{attachment.href}}">{{attachment.name}}</button>
+                    </view>
+                </view>
+                <view style="margin:5px;"></view>
             </view>
         </view>
     </view>
