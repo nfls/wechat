@@ -1,24 +1,97 @@
 Page({
+    temps: [],
+    path: [],
+    data: {
+        displayItems: [],
+        path: ""
+    },
     onLoad: function() {
         this.getToken()
     },
     getToken: function() {
         const that = this
         getApp().requestAPI("school/pastpaper/token", null, "GET", (data) => {
-            that.OSSRequest(data.data.AccessKeyId, data.data.AccessKeySecret, data.data.SecurityToken)
+            that.OSSRequest(data.data.AccessKeyId, data.data.AccessKeySecret, data.data.SecurityToken, "")
         })
     },
-    OSSRequest: function(accessKeyId, accessKeySecret, securityKeyToken) {
+    getCurrentPath: function () {
+        let reducer = (accumulator, currentValue) => accumulator + "/" + currentValue;
+        var uri = this.path.reduce(reducer, "") + "/"
+        if (uri.startsWith("/"))
+            uri = uri.slice(1)
+        this.setData({
+            path: uri
+        })
+        return uri
+    },
+    click: function(e) {
+        let file = e.currentTarget.dataset.file
+        console.log(file)
+        if(file.size === 0) {
+            this.path.push(file.name)
+            this.list()
+        } else {
+
+        }
+    },
+    list: function() {
+        console.log(this.path)
+        let items = wx.getStorageSync('pastpaper_list');
+        const self = this
+        let displayItems = items.filter((object) => {
+            if (object.key.endsWith("/")) {
+                return object.key.split("/").length - 1 === self.path.length + 1 && object.key.startsWith(self.getCurrentPath())
+            } else {
+                return object.key.split("/").length === self.path.length + 1 && object.key.startsWith(self.getCurrentPath())
+            }
+        }).map((object) => {
+            object.name = object.key.replace(self.getCurrentPath(), "").replace("/", "")
+            object.readableSize = this.getSize(object.size)
+            return object
+        })
+        this.setData({
+            displayItems: displayItems
+        })
+    },
+    OSSRequest: function(accessKeyId, accessKeySecret, securityKeyToken, nextMarker) {
         const time = new Date().toUTCString()
         wx.request({
             url:"https://nfls-papers.oss-cn-shanghai.aliyuncs.com",
+            data: {
+                "max-keys": 1000,
+                "marker": nextMarker
+            },
             header: {
                 "Authorization": this.getAuthorization(accessKeyId, accessKeySecret, securityKeyToken, time),
                 "X-OSS-Security-Token": securityKeyToken,
                 "X-OSS-Date": time
             },
             success:res=>{
-                console.log(res)
+                let XMLParser = new Parser.DOMParser()
+                let response = XMLParser.parseFromString(res.data)
+                var nextMarker = ""
+                if(response.getElementsByTagName("NextMarker").length > 0) {
+                    nextMarker = response.getElementsByTagName("NextMarker")[0].firstChild.data
+                } else {
+                    nextMarker = null
+                }
+                let contents = response.getElementsByTagName("Contents")
+                for(var i=0; i<contents.length; i++) {
+                    let current = contents[i].childNodes
+                    let item = {}
+                    item.key = current[1].firstChild.data
+                    item.lastModified = current[3].firstChild.data
+                    item.eTag = current[5].firstChild.data
+                    item.size = parseInt(current[9].firstChild.data)
+                    this.temps.push(item)
+                }
+                if(nextMarker && false) {
+                    this.OSSRequest(accessKeyId, accessKeySecret, securityKeyToken, nextMarker)
+                } else {
+                    wx.setStorageSync('pastpaper_list', this.temps);
+                    this.temps = []
+                    this.list()
+                }
             }
         })
     },
@@ -32,9 +105,36 @@ Page({
             "/nfls-papers/"
         let signature = b64_hmac_sha1(accessKeySecret, message)
         return "OSS " + accessKeyId + ":" + signature
+    },
+    getSize: function(size) {
+        if(size === 0)
+            return "文件夹"
+        size = size / 1024
+        var count = 0
+        while(size > 1024) {
+            size = size / 1024
+            count ++
+        }
+        var quantity = ""
+        switch(count){
+            case 0:
+                quantity = "KB"
+                break
+            case 1:
+                quantity = "MB"
+                break
+            case 2:
+                quantity = "GB"
+                break
+            default:
+                quantity = "--"
+                break
+        }
+        return size.toFixed(1) + quantity
     }
 })
 
+var Parser = require("../../lib/xmldom/dom-parser")
 /**
  * https://github.com/pH200/hmacsha1-js/blob/master/index.js
  */
