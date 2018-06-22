@@ -3,27 +3,26 @@
 const app = getApp()
 
 Page({
-    data: {
-        "info": "加载中，咕咕咕"
-    },
     onLoad: function () {
+        wx.showLoading({
+            title: "加载中",
+            mask: true
+        });
         wx.login({
             success: res => {
                 const self = this
                 getApp().requestAPI("user/weChatLogin", {"token": res.code}, "POST", function(data) {
+                    wx.hideLoading()
                     if(data.code === 200) {
-                        wx.redirectTo({
-                            url: '/pages/school/pastpaper'
+                        wx.switchTab({
+                            url: '/pages/user/info'
                         })
                     } else {
                         wx.redirectTo({
                             url: '/pages/user/login'
                         })
                     }
-                    console.log(data)
-
                 })
-
             }
         })
     }

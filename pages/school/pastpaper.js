@@ -14,10 +14,26 @@ Page({
     getToken: function() {
         const that = this
         getApp().requestAPI("school/pastpaper/token", null, "GET", (data) => {
-            this.accessKeyId = data.data.AccessKeyId
-            this.accessKeySecret = data.data.AccessKeySecret
-            this.securityToken =  data.data.SecurityToken
-            that.OSSRequest("")
+            if(data.code === 200) {
+                this.accessKeyId = data.data.AccessKeyId
+                this.accessKeySecret = data.data.AccessKeySecret
+                this.securityToken =  data.data.SecurityToken
+                that.OSSRequest("")
+                that.list()
+            } else {
+                wx.removeStorage("pastpaper_list")
+                var message = ""
+                if(data.data === "Access Denied.")
+                    message = "您没有实名认证，请在网页版或手机客户端上完成相关操作！"
+                else
+                    message = data.data
+                wx.showModal({
+                    title: "权限错误",
+                    content: message,
+                    showCancel: false
+                });
+            }
+
         })
     },
     getCurrentPath: function () {
@@ -32,36 +48,63 @@ Page({
     },
     click: function(e) {
         let file = e.currentTarget.dataset.file
-        console.log(file)
-        if(file.size === 0) {
+        if(file.size === -1) {
+            this.path.pop()
+            this.list()
+        }else if(file.size === 0) {
             this.path.push(file.name)
             this.list()
         } else {
-            let time = new Date().toUTCString()
-            var downloadTask = wx.downloadFile({
-                url: "https://nfls-papers.oss-cn-shanghai.aliyuncs.com/" + file.key,
-                header: {
-                    "Authorization": this.getAuthorization(time, file.key),
-                    "X-OSS-Security-Token": this.securityToken,
-                    "X-OSS-Date": time
-                },
-                success: res => {
-
-                }
-            });
-            $wuxLoading.show({
-                text: '数据加载中',
-            })
-            downloadTask.onProgressUpdate((progress, totalBytesWritten, totalBytesExpectedToWrite) => {
-                console.log(progress)
-            })
+            if (file.size <= 2 * 1024 * 1024) {
+                this.download(file)
+            } else {
+                wx.showModal({
+                    title: "大文件下载确认",
+                    content: "您即将下载 " + file.name + "，文件大小为 " + file.readableSize + "，是否确定？",
+                    success: function(res) {
+                        if (res.confirm) {
+                            this.download(file)
+                        } else if (res.cancel) {
+                            return
+                        }
+                    }
+                })
+            }
         }
     },
+    download: function(file) {
+        let time = new Date().toUTCString()
+        var downloadTask = wx.downloadFile({
+            url: "https://nfls-papers.oss-cn-shanghai.aliyuncs.com/" + file.key,
+            header: {
+                "Authorization": this.getAuthorization(time, file.key),
+                "X-OSS-Security-Token": this.securityToken,
+                "X-OSS-Date": time
+            },
+            success: res => {
+                wx.openDocument({
+                    filePath: res.tempFilePath
+                })
+            },
+            complete: res => {
+                wx.hideLoading()
+            }
+        });
+        wx.showLoading({
+            title: "下载中",
+            mask: true
+        });
+    },
     list: function() {
-        console.log(this.path)
         let items = wx.getStorageSync('pastpaper_list');
+        if(!items) {
+            wx.showLoading({
+                title: "获取文件列表中"
+            })
+        }
+        wx.hideLoading()
         const self = this
-        let displayItems = items.filter((object) => {
+        var displayItems = items.filter((object) => {
             if (object.key.endsWith("/")) {
                 return object.key.split("/").length - 1 === self.path.length + 1 && object.key.startsWith(self.getCurrentPath())
             } else {
@@ -72,6 +115,12 @@ Page({
             object.readableSize = this.getSize(object.size)
             return object
         })
+        if (this.path.length > 0) {
+            displayItems.unshift({
+                name: "返回上级目录",
+                size: -1
+            })
+        }
         this.setData({
             displayItems: displayItems
         })
@@ -108,7 +157,7 @@ Page({
                     item.size = parseInt(current[9].firstChild.data)
                     this.temps.push(item)
                 }
-                if(nextMarker && false) {
+                if(nextMarker) {
                     this.OSSRequest(nextMarker)
                 } else {
                     wx.setStorageSync('pastpaper_list', this.temps);
@@ -137,7 +186,6 @@ Page({
                 "x-oss-security-token:" + this.securityToken + "\n" +
                 "/nfls-papers/"
         }
-        console.log(message)
         let signature = b64_hmac_sha1(this.accessKeySecret, message)
         return "OSS " + this.accessKeyId + ":" + signature
     },

@@ -15,13 +15,21 @@ Page({
     list: function () {
         const that = this
         getApp().requestAPI("school/blackboard/list", null, "GET", (data) => {
-            that.setData({
-                classes: data.data.map((claz) => {
-                    return claz["title"]
-                }),
-                clazInfo: data.data
-            })
-            this.detail()
+            if(data.data.length > 0){
+                that.setData({
+                    classes: data.data.map((claz) => {
+                        return claz["title"]
+                    }),
+                    clazInfo: data.data
+                })
+                this.detail()
+            } else {
+                wx.showModal({
+                    content: "您没有加入任何课堂！",
+                    showCancel: false
+                });
+            }
+
         })
     },
     detail: function() {

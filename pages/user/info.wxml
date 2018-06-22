@@ -15,6 +15,8 @@
                 <view class="weui-cell__ft">{{phone}}</view>
             </view>
         </view>
-        <view class="weui-cells__tips">如果你能进入本页面并看到正确的信息，则说明您的账户已成功绑定。然而并没有任何方式可以解除绑定。</view>
+    </view>
+    <view class="page__bd page__bd_spacing">
+        <button class="weui-btn" type="warn">退出当前账户并解除绑定</button>
     </view>
 </view>
