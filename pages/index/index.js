@@ -15,7 +15,7 @@ Page({
                     wx.hideLoading()
                     if(data.code === 200) {
                         wx.switchTab({
-                            url: '/pages/user/info'
+                            url: '/pages/school/blackboard'
                         })
                     } else {
                         wx.redirectTo({

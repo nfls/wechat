@@ -15,8 +15,8 @@
                 <view class="weui-cell__ft">{{phone}}</view>
             </view>
         </view>
-    </view>
-    <view class="page__bd page__bd_spacing">
-        <button class="weui-btn" type="warn">退出当前账户并解除绑定</button>
+        <view class="page__bd_spacing" style="margin:10px;">
+            <button class="weui-btn" type="warn">退出并解除绑定（没用）</button>
+        </view>
     </view>
 </view>
