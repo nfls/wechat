@@ -1,6 +1,6 @@
 <view>
     <view class="page__bd">
-        <view class="weui-cells__title">路径：{{path}}</view>
+        <view class="weui-cells__title">当前路径：{{path}}</view>
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell" wx:for="{{displayItems}}" bindtap="click" data-file="{{item}}">
                 <view class="weui-cell__bd weui-cell__ft_in-access" wx:if="{{item.size <= 0}}">{{item.name}}</view>
@@ -8,5 +8,6 @@
                 <view class="weui-cell__ft" wx:if="{{item.size > 0}}">{{item.readableSize}}</view>
             </view>
         </view>
+        <view class="weui-cells__tips">由于文件数量较多，加载可能比较缓慢，请不要反复点击。</view>
     </view>
 </view>

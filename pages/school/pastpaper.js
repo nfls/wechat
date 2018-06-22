@@ -1,5 +1,6 @@
 Page({
     temps: [],
+    items: [],
     path: [],
     accessKeyId: "",
     accessKeySecret: "",
@@ -18,10 +19,15 @@ Page({
                 this.accessKeyId = data.data.AccessKeyId
                 this.accessKeySecret = data.data.AccessKeySecret
                 this.securityToken =  data.data.SecurityToken
+                let items = []
+                for(var i=1;i<=200;i++){
+                    let temp = wx.getStorageSync("pastpaper_list_" + i) || [];
+                    items = items.concat(temp)
+                }
+                this.items = items
                 that.OSSRequest("")
                 that.list()
             } else {
-                wx.removeStorage("pastpaper_list")
                 var message = ""
                 if(data.data === "Access Denied.")
                     message = "您没有实名认证，请在网页版或手机客户端上完成相关操作！"
@@ -96,15 +102,15 @@ Page({
         });
     },
     list: function() {
-        let items = wx.getStorageSync('pastpaper_list');
-        if(!items) {
+        if(this.items.length === 0) {
             wx.showLoading({
                 title: "获取文件列表中"
             })
+            return
         }
         wx.hideLoading()
         const self = this
-        var displayItems = items.filter((object) => {
+        var displayItems = this.items.filter((object) => {
             if (object.key.endsWith("/")) {
                 return object.key.split("/").length - 1 === self.path.length + 1 && object.key.startsWith(self.getCurrentPath())
             } else {
@@ -115,6 +121,11 @@ Page({
             object.readableSize = this.getSize(object.size)
             return object
         })
+        if(displayItems.length === 0) {
+            this.path.pop()
+            this.list()
+            return
+        }
         if (this.path.length > 0) {
             displayItems.unshift({
                 name: "返回上级目录",
@@ -152,15 +163,18 @@ Page({
                     let current = contents[i].childNodes
                     let item = {}
                     item.key = current[1].firstChild.data
-                    item.lastModified = current[3].firstChild.data
-                    item.eTag = current[5].firstChild.data
+                    //item.lastModified = current[3].firstChild.data
+                    //item.eTag = current[5].firstChild.data
                     item.size = parseInt(current[9].firstChild.data)
                     this.temps.push(item)
                 }
                 if(nextMarker) {
                     this.OSSRequest(nextMarker)
                 } else {
-                    wx.setStorageSync('pastpaper_list', this.temps);
+                    for(var i=1;i<=200;i++) {
+                        wx.setStorageSync("pastpaper_list_" + i, this.temps.slice(100*(i-1),100*i))
+                    }
+                    this.items = this.temps
                     this.temps = []
                     this.list()
                 }

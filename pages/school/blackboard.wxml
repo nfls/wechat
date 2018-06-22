@@ -39,9 +39,9 @@
                     </view>
                 </view>
                 <view class="weui-cells__title" wx:if="{{item.attachment.length > 0}}">附件</view>
-                <view style="margin-right: 15px; margin-left: 15px;">
-                    <view wx:if="{{item.attachment.length > 0}}" wx:for="{{item.attachment}}" wx:for-item="attachment" style="">
-                        <button size="mini" bindtap="preview" data-name="{{attachment.href}}">{{attachment.name}}</button>
+                <view class="weui-cells weui-cells_after-title" >
+                    <view class="weui-cell" wx:for="{{item.attachment}}" wx:for-item="attachment" bindtap="preview" data-name="{{attachment.href}}">
+                        <view class="weui-cell__bd weui-cell__ft_in-access">{{attachment.name}}</view>
                     </view>
                 </view>
                 <view style="margin:5px;"></view>
