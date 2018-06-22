@@ -22,11 +22,15 @@ App({
                 "Cookie" : cookie
             },
             success: function (res) {
-                if(res.header["Set-Cookie"]) {
-                    var cookie = res.header["Set-Cookie"].split(";")[0].split("=")[1]
-                    wx.setStorageSync("PHPSESSID", cookie)
+                if(res.code === 504) {
+                    this.requestAPI(path, data, method, success)
+                } else {
+                    if(res.header["Set-Cookie"]) {
+                        var cookie = res.header["Set-Cookie"].split(";")[0].split("=")[1]
+                        wx.setStorageSync("PHPSESSID", cookie)
+                    }
+                    success(res.data)
                 }
-                success(res.data)
             }
         })
     }

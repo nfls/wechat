@@ -1,6 +1,9 @@
 Page({
     temps: [],
     path: [],
+    accessKeyId: "",
+    accessKeySecret: "",
+    securityToken: "",
     data: {
         displayItems: [],
         path: ""
@@ -11,7 +14,10 @@ Page({
     getToken: function() {
         const that = this
         getApp().requestAPI("school/pastpaper/token", null, "GET", (data) => {
-            that.OSSRequest(data.data.AccessKeyId, data.data.AccessKeySecret, data.data.SecurityToken, "")
+            this.accessKeyId = data.data.AccessKeyId
+            this.accessKeySecret = data.data.AccessKeySecret
+            this.securityToken =  data.data.SecurityToken
+            that.OSSRequest("")
         })
     },
     getCurrentPath: function () {
@@ -31,7 +37,24 @@ Page({
             this.path.push(file.name)
             this.list()
         } else {
+            let time = new Date().toUTCString()
+            var downloadTask = wx.downloadFile({
+                url: "https://nfls-papers.oss-cn-shanghai.aliyuncs.com/" + file.key,
+                header: {
+                    "Authorization": this.getAuthorization(time, file.key),
+                    "X-OSS-Security-Token": this.securityToken,
+                    "X-OSS-Date": time
+                },
+                success: res => {
 
+                }
+            });
+            $wuxLoading.show({
+                text: '数据加载中',
+            })
+            downloadTask.onProgressUpdate((progress, totalBytesWritten, totalBytesExpectedToWrite) => {
+                console.log(progress)
+            })
         }
     },
     list: function() {
@@ -53,17 +76,17 @@ Page({
             displayItems: displayItems
         })
     },
-    OSSRequest: function(accessKeyId, accessKeySecret, securityKeyToken, nextMarker) {
-        const time = new Date().toUTCString()
+    OSSRequest: function(marker) {
+        let time = new Date().toUTCString()
         wx.request({
             url:"https://nfls-papers.oss-cn-shanghai.aliyuncs.com",
             data: {
                 "max-keys": 1000,
-                "marker": nextMarker
+                "marker": marker
             },
             header: {
-                "Authorization": this.getAuthorization(accessKeyId, accessKeySecret, securityKeyToken, time),
-                "X-OSS-Security-Token": securityKeyToken,
+                "Authorization": this.getAuthorization(time),
+                "X-OSS-Security-Token": this.securityToken,
                 "X-OSS-Date": time
             },
             success:res=>{
@@ -86,7 +109,7 @@ Page({
                     this.temps.push(item)
                 }
                 if(nextMarker && false) {
-                    this.OSSRequest(accessKeyId, accessKeySecret, securityKeyToken, nextMarker)
+                    this.OSSRequest(nextMarker)
                 } else {
                     wx.setStorageSync('pastpaper_list', this.temps);
                     this.temps = []
@@ -95,16 +118,28 @@ Page({
             }
         })
     },
-    getAuthorization: function(accessKeyId, accessKeySecret, securityToken, time) {
-        let message = "GET" + "\n" +
-            "\n" +
-            "application/json\n" +
-            (new Date().toUTCString()) + "\n" +
-            "x-oss-date:" + time + "\n" +
-            "x-oss-security-token:" + securityToken + "\n" +
-            "/nfls-papers/"
-        let signature = b64_hmac_sha1(accessKeySecret, message)
-        return "OSS " + accessKeyId + ":" + signature
+    getAuthorization: function(time, resource) {
+        var message = ""
+        if(resource) {
+            message = "GET" + "\n" +
+                "\n" +
+                "\n" +
+                time + "\n" +
+                "x-oss-date:" + time + "\n" +
+                "x-oss-security-token:" + this.securityToken + "\n" +
+                "/nfls-papers/" + resource
+        } else {
+            message = "GET" + "\n" +
+                "\n" +
+                "application/json\n" +
+                time + "\n" +
+                "x-oss-date:" + time + "\n" +
+                "x-oss-security-token:" + this.securityToken + "\n" +
+                "/nfls-papers/"
+        }
+        console.log(message)
+        let signature = b64_hmac_sha1(this.accessKeySecret, message)
+        return "OSS " + this.accessKeyId + ":" + signature
     },
     getSize: function(size) {
         if(size === 0)
@@ -134,7 +169,7 @@ Page({
     }
 })
 
-var Parser = require("../../lib/xmldom/dom-parser")
+const Parser = require("../../lib/xmldom/dom-parser")
 /**
  * https://github.com/pH200/hmacsha1-js/blob/master/index.js
  */
