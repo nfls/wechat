@@ -3,51 +3,44 @@ const moment = require('../../lib/moment-with-locales.min');
 
 Page({
     data: {
-        classes: [],
-        clazIndex: 1,
-        clazInfo: [],
-        datail: [],
-        teacher: []
+        id: null,
+        datail: null,
+        list: [],
+        mdList: []
     },
-    onLoad: function() {
-        this.list()
-    },
-    list: function () {
-        const that = this
-        getApp().requestAPI("school/blackboard/list", null, "GET", (data) => {
-            if(data.data.length > 0){
-                that.setData({
-                    classes: data.data.map((claz) => {
-                        return claz["title"]
-                    }),
-                    clazInfo: data.data
-                })
-                this.detail()
-            } else {
-                wx.showModal({
-                    content: "您没有加入任何课堂！",
-                    showCancel: false
-                });
-            }
+    onLoad(options) {
+        console.log(options)
+        this.setData({
+            id: options.id
+        })
+        this.detail()
 
+    },
+    detail() {
+        getApp().requestWaterAPI("blackboard/detail?id=" + this.data.id, null, "GET", (data) => {
+            let detail = data["data"]
+            this.setData({
+                "detail": detail
+            })
+            wxParse.wxParse("announcement", "md", this.data.detail.announcement, this, 5)
+            wxParse.wxParse("teacher", "html", this.data.detail.teachers[0].htmlUsername, this, 5)
+            this.list()
         })
     },
-    detail: function() {
-        const that = this
-        getApp().requestAPI("school/blackboard/detail?id=" + this.data.clazInfo[this.data.clazIndex].id, null, "GET", (data) => {
-            var d = data.data
-            d.notices = d.notices.map( (data) => {
-                data.time = moment(data.time).format("LLL")
-                if(data.deadline) {
-                    data.deadline = moment(data.deadline).format("LLL")
-                }
-                return data
+    list() {
+        getApp().requestWaterAPI("notice/list?id=" + this.data.id, null, "GET", (data) => {
+            let list = data["data"].map((object)=>{
+                object.time = moment(object.time).format("lll")
+                if(object.deadline)
+                    object.deadline = moment(object.deadline).format("lll")
+                return object
             })
-            that.setData({
-                detail: d
+            this.setData({
+                list: list
             })
-            wxParse.wxParse("announcement", "md", that.data.detail.announcement, that, 5)
-            wxParse.wxParse("teacher", "html", that.data.detail.teacher.htmlUsername, that, 5)
+            list.forEach((object, index)=>{
+                wxParse.wxParse("mdList."+index, "md", object.content, this, 5)
+            })
         })
     },
     preview: function(e) {
@@ -60,11 +53,5 @@ Page({
                 })
             }
         })
-    },
-    bindClazChange: function(e) {
-        this.setData({
-            clazIndex: e.detail.value
-        })
-        this.detail()
     }
 })

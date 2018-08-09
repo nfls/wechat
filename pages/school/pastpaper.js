@@ -9,18 +9,18 @@ Page({
         displayItems: [],
         path: ""
     },
-    onLoad: function() {
+    onLoad() {
         this.getToken()
     },
-    getToken: function() {
+    getToken() {
         const that = this
-        getApp().requestAPI("school/pastpaper/token", null, "GET", (data) => {
+        getApp().requestWaterAPI("resource/token", null, "GET", (data) => {
             if(data.code === 200) {
                 this.accessKeyId = data.data.AccessKeyId
                 this.accessKeySecret = data.data.AccessKeySecret
                 this.securityToken =  data.data.SecurityToken
                 let items = []
-                for(var i=1;i<=200;i++){
+                for(let i=1;i<=200;i++){
                     let temp = wx.getStorageSync("pastpaper_list_" + i) || [];
                     items = items.concat(temp)
                 }
@@ -28,7 +28,7 @@ Page({
                 that.OSSRequest("")
                 that.list()
             } else {
-                var message = ""
+                let message = ""
                 if(data.data === "Access Denied.")
                     message = "您没有实名认证，请在网页版或手机客户端上完成相关操作！"
                 else
@@ -42,9 +42,9 @@ Page({
 
         })
     },
-    getCurrentPath: function () {
+    getCurrentPath () {
         let reducer = (accumulator, currentValue) => accumulator + "/" + currentValue;
-        var uri = this.path.reduce(reducer, "") + "/"
+        let uri = this.path.reduce(reducer, "") + "/"
         if (uri.startsWith("/"))
             uri = uri.slice(1)
         this.setData({
@@ -52,7 +52,7 @@ Page({
         })
         return uri
     },
-    click: function(e) {
+    click(e) {
         let file = e.currentTarget.dataset.file
         if(file.size === -1) {
             this.path.pop()
@@ -78,9 +78,9 @@ Page({
             }
         }
     },
-    download: function(file) {
+    download(file) {
         let time = new Date().toUTCString()
-        var downloadTask = wx.downloadFile({
+        let downloadTask = wx.downloadFile({
             url: "https://nfls-papers.oss-cn-shanghai.aliyuncs.com/" + file.key,
             header: {
                 "Authorization": this.getAuthorization(time, file.key),
@@ -101,16 +101,15 @@ Page({
             mask: true
         });
     },
-    list: function() {
-        if(this.items.length === 0) {
-            wx.showLoading({
-                title: "获取文件列表中"
-            })
-            return
-        }
-        wx.hideLoading()
+    list() {
+        this.setData({
+            displayItems: []
+        })
+        wx.showLoading({
+            title: "加载中"
+        })
         const self = this
-        var displayItems = this.items.filter((object) => {
+        let displayItems = this.items.filter((object) => {
             if (object.key.endsWith("/")) {
                 return object.key.split("/").length - 1 === self.path.length + 1 && object.key.startsWith(self.getCurrentPath())
             } else {
@@ -135,8 +134,9 @@ Page({
         this.setData({
             displayItems: displayItems
         })
+        wx.hideLoading()
     },
-    OSSRequest: function(marker) {
+    OSSRequest(marker) {
         let time = new Date().toUTCString()
         wx.request({
             url:"https://nfls-papers.oss-cn-shanghai.aliyuncs.com",
@@ -152,14 +152,14 @@ Page({
             success:res=>{
                 let XMLParser = new Parser.DOMParser()
                 let response = XMLParser.parseFromString(res.data)
-                var nextMarker = ""
+                let nextMarker = ""
                 if(response.getElementsByTagName("NextMarker").length > 0) {
                     nextMarker = response.getElementsByTagName("NextMarker")[0].firstChild.data
                 } else {
                     nextMarker = null
                 }
                 let contents = response.getElementsByTagName("Contents")
-                for(var i=0; i<contents.length; i++) {
+                for(let i=0; i<contents.length; i++) {
                     let current = contents[i].childNodes
                     let item = {}
                     item.key = current[1].firstChild.data
@@ -171,7 +171,7 @@ Page({
                 if(nextMarker) {
                     this.OSSRequest(nextMarker)
                 } else {
-                    for(var i=1;i<=200;i++) {
+                    for(let i=1;i<=200;i++) {
                         wx.setStorageSync("pastpaper_list_" + i, this.temps.slice(100*(i-1),100*i))
                     }
                     this.items = this.temps
@@ -181,8 +181,8 @@ Page({
             }
         })
     },
-    getAuthorization: function(time, resource) {
-        var message = ""
+    getAuthorization(time, resource) {
+        let message = ""
         if(resource) {
             message = "GET" + "\n" +
                 "\n" +
@@ -203,16 +203,16 @@ Page({
         let signature = b64_hmac_sha1(this.accessKeySecret, message)
         return "OSS " + this.accessKeyId + ":" + signature
     },
-    getSize: function(size) {
+    getSize(size) {
         if(size === 0)
             return "文件夹"
         size = size / 1024
-        var count = 0
+        let count = 0
         while(size > 1024) {
             size = size / 1024
             count ++
         }
-        var quantity = ""
+        let quantity = ""
         switch(count){
             case 0:
                 quantity = "KB"

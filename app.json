@@ -4,6 +4,7 @@
     "pages/user/info",
     "pages/user/login",
     "pages/school/blackboard",
+    "pages/school/list",
     "pages/school/pastpaper"
   ],
   "window": {
@@ -19,7 +20,7 @@
     "backgroundColor": "#f7f7f8",
     "list": [
       {
-        "pagePath": "pages/school/blackboard",
+        "pagePath": "pages/school/list",
         "text": "黑板"
       }, {
         "pagePath": "pages/school/pastpaper",

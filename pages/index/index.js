@@ -12,16 +12,15 @@ Page({
             success: res => {
                 const self = this
                 getApp().requestAPI("user/weChatLogin", {"token": res.code}, "POST", function(data) {
-                    wx.hideLoading()
-                    if(data.code === 200) {
-                        wx.switchTab({
-                            url: '/pages/school/blackboard'
-                        })
-                    } else {
-                        wx.redirectTo({
-                            url: '/pages/user/login'
+                    if(data["code"] === 200) {
+                        getApp().requestWaterAPI("user/login", null, "GET", (data)=>{
+                            wx.hideLoading()
+                            wx.switchTab({
+                                url: '/pages/school/list'
+                            })
                         })
                     }
+
                 })
             }
         })
