@@ -5,7 +5,8 @@
     "pages/user/login",
     "pages/school/blackboard",
     "pages/school/list",
-    "pages/school/pastpaper"
+    "pages/school/pastpaper",
+    "pages/school/search"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -25,6 +26,9 @@
       }, {
         "pagePath": "pages/school/pastpaper",
         "text": "资源"
+      }, {
+        "pagePath": "pages/school/search",
+        "text": "搜索"
       }, {
         "pagePath": "pages/user/info",
         "text": "设置"

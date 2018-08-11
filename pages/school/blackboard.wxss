@@ -1,6 +1,3 @@
-.markdown {
+.html-render {
     margin: 10px;
-}
-.weui-form-preview{
-    margin-bottom: 25px;
 }

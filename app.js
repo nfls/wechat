@@ -5,28 +5,66 @@ App({
     globalData: {
         userInfo: null
     },
-    requestAPI: function(path, data, method, success) {
+    download(path, success) {
+        let cookie = ""
+        let value = wx.getStorageSync('PHPSESSID_WATER')
+        if (value) {
+            cookie = "PHPSESSID=" + value + ";"
+        }
+        wx.downloadFile({
+            url: "https://water.nfls.io/" + path,
+            header: {
+                "Cookie": cookie,
+                "Client": "weChat"
+            },
+            success: res => {
+                success(res)
+            }
+        })
+    },
+    upload(path, file, success) {
+        let cookie = ""
+        let value = wx.getStorageSync('PHPSESSID_WATER')
+        if (value) {
+            cookie = "PHPSESSID=" + value + ";"
+        }
+        wx.uploadFile({
+            url: "https://water.nfls.io/" + path,
+            header: {
+                "Cookie": cookie,
+                "Client": "weChat"
+            },
+            filePath: file,
+            name: 'image',
+            success: res => {
+                success(res.data)
+            }
+        })
+    },
+    requestAPI: function (path, data, method, success) {
         let cookie = ""
         let value = wx.getStorageSync('PHPSESSID_MAIN')
-        if (value) { cookie = "PHPSESSID="+value+";" }
+        if (value) {
+            cookie = "PHPSESSID=" + value + ";"
+        }
 
         wx.request({
             url: "https://nfls.io/" + path,
             data: data,
             method: method,
             header: {
-                "Cookie" : cookie,
-                "Client" : "weChat"
+                "Cookie": cookie,
+                "Client": "weChat"
             },
-            success (res) {
-                if(res.code === 504) {
+            success(res) {
+                if (res.code === 504) {
                     this.requestAPI(path, data, method, success)
                 } else {
-                    if(res.header["Set-Cookie"]) {
+                    if (res.header["Set-Cookie"]) {
                         let cookie = res.header["Set-Cookie"].split(";")[0].split("=")[1]
                         wx.setStorageSync("PHPSESSID_MAIN", cookie)
                     }
-                    if(res.data["code"] === 307 && res.data["data"].startsWith("https")) {
+                    if (res.data["code"] === 307 && res.data["data"].startsWith("https")) {
                         getApp().handleRedirect(res.data["data"], success)
                     } else {
                         success(res.data)
@@ -39,7 +77,7 @@ App({
         let cookie = ""
         let value = wx.getStorageSync('PHPSESSID_WATER')
         if (value) {
-            cookie = "PHPSESSID="+value+";"
+            cookie = "PHPSESSID=" + value + ";"
         }
 
         wx.request({
@@ -47,18 +85,18 @@ App({
             data: data,
             method: method,
             header: {
-                "Cookie" : cookie,
-                "Client" : "weChat"
+                "Cookie": cookie,
+                "Client": "weChat"
             },
             success(res) {
-                if(res.code === 504) {
+                if (res.code === 504) {
                     this.requestAPI(path, data, method, success)
                 } else {
-                    if(res.header["Set-Cookie"]) {
+                    if (res.header["Set-Cookie"]) {
                         let cookie = res.header["Set-Cookie"].split(";")[0].split("=")[1]
                         wx.setStorageSync("PHPSESSID_WATER", cookie)
                     }
-                    if(res.data["code"] === 307 && res.data["data"].startsWith("https")) {
+                    if (res.data["code"] === 307 && res.data["data"].startsWith("https")) {
                         getApp().handleRedirect(res.data["data"], success)
                     } else {
                         success(res.data)
@@ -68,7 +106,7 @@ App({
         })
     },
     handleRedirect(url, success) {
-        if(url.startsWith("https://nfls.io")) {
+        if (url.startsWith("https://nfls.io")) {
             getApp().requestAPI(url.replace("https://nfls.io/", ""), null, "GET", success)
         } else if (url.startsWith("https://water.nfls.io")) {
             getApp().requestWaterAPI(url.replace("https://water.nfls.io/", ""), null, "GET", success)

@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "i-card": "../../lib/dist/card/index",
+    "wemark": "../../lib/wemark/wemark"
+  }
+}

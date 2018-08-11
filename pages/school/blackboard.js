@@ -4,7 +4,7 @@ const moment = require('../../lib/moment-with-locales.min');
 Page({
     data: {
         id: null,
-        datail: null,
+        detail: null,
         list: [],
         mdList: []
     },
@@ -30,28 +30,23 @@ Page({
     list() {
         getApp().requestWaterAPI("notice/list?id=" + this.data.id, null, "GET", (data) => {
             let list = data["data"].map((object)=>{
-                object.time = moment(object.time).format("lll")
+                object.time = moment(object.time).format("MM-DD HH:mm")
                 if(object.deadline)
-                    object.deadline = moment(object.deadline).format("lll")
+                    object.deadline = moment(object.deadline).format("MM-DD HH:mm")
                 return object
             })
             this.setData({
                 list: list
             })
-            list.forEach((object, index)=>{
-                wxParse.wxParse("mdList."+index, "md", object.content, this, 5)
-            })
         })
     },
-    preview: function(e) {
-        let url = e.currentTarget.dataset.name
-        wx.downloadFile({
-            url: url,
-            success: (result) => {
-                wx.openDocument({
-                    filePath: result.tempFilePath
-                })
-            }
+    preview(e) {
+        let noticeId = e.currentTarget.dataset.noticeid
+        let fileId = e.currentTarget.dataset.fileid
+        getApp().download("notice/download?id="+this.data.id+"&noticeId="+noticeId+"&fileId="+fileId, (res)=>{
+            wx.openDocument({
+                filePath: res.tempFilePath
+            })
         })
     }
 })

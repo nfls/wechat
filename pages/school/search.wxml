@@ -1,0 +1,56 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+    <view class="page__bd">
+        <view class="weui-cells__title">学科</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_select">
+                <view class="weui-cell__hd" style="width: 120px">
+                    <picker bindchange="bindChange" id="type" value="{{type}}" range="{{types}}">
+                        <view class="weui-select">{{types[type]}}</view>
+                    </picker>
+                </view>
+                <view class="weui-cell__bd weui-cell__bd_in-select-before">
+                    <picker bindchange="bindChange" id="course" value="{{course}}" range="{{courses}}">
+                        <view class="weui-select">{{courses[course]}}</view>
+                    </picker>
+                </view>
+            </view>
+        </view>
+
+        <view class="weui-cells__title">题型</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_switch">
+                <view class="weui-cell__bd">选择题</view>
+                <view class="weui-cell__ft"><switch id="multipleChoice" checked="{{multipleChoice}}" bindchange="bindChange"/></view>
+            </view>
+            <view class="weui-cell weui-cell_switch">
+                <view class="weui-cell__bd">简答题</view>
+                <view class="weui-cell__ft"><switch id="shortResponse" checked="{{shortResponse}}" bindchange="bindChange"/></view>
+            </view>
+        </view>
+
+        <view class="weui-cells__title">附加</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_switch">
+                <view class="weui-cell__bd">精准匹配</view>
+                <view class="weui-cell__ft"><switch id="precise" checked="{{precise}}" bindchange="bindChange"/></view>
+            </view>
+        </view>
+
+        <view class="weui-cells__title">内容</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__bd">
+                    <input id="text" class="weui-input" value="{{text}}" bindchange="bindChange" placeholder="题目中几个连续的词" />
+                </view>
+                <view class="weui-cell__ft">
+                    <view class="weui-vcode-btn" bindtap="image">图像识别</view>
+                </view>
+            </view>
+        </view>
+        <view class="weui-cells__tips">小程序仅能搜索前十个匹配的</view>
+
+        <view class="weui-btn-area">
+            <button class="weui-btn" type="primary" bindtap="showTopTips">搜索</button>
+        </view>
+    </view>
+</view>

@@ -16,7 +16,7 @@ Page({
                         getApp().requestWaterAPI("user/login", null, "GET", (data)=>{
                             wx.hideLoading()
                             wx.switchTab({
-                                url: '/pages/school/list'
+                                url: '/pages/school/search'
                             })
                         })
                     }

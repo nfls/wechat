@@ -11,7 +11,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.0.4",
+	"libVersion": "2.2.0",
 	"appid": "wx37344855d95fd4fd",
 	"projectname": "南外人黑板",
 	"isGameTourist": false,
