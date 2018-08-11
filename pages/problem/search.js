@@ -13,6 +13,30 @@ Page({
     onLoad() {
         this.list()
     },
+    search() {
+        let isMultipleChoice = null;
+        if (this.data.multipleChoice && !this.data.shortResponse)
+            isMultipleChoice = true;
+        else if (!this.data.multipleChoice && this.data.shortResponse)
+            isMultipleChoice = false;
+        else if (!this.data.multipleChoice && !this.data.shortResponse) {
+            this.setData({
+                multipleChoice: true,
+                shortResponse: true
+            })
+        }
+        let data = {
+            "text": this.data.text,
+            "precise": this.data.precise,
+            "isMultipleChoice": isMultipleChoice,
+            "course": null,
+            "page": 1,
+            "size": 10
+        }
+        getApp().requestWaterAPI("problem/search", data, "POST", (data)=>{
+            console.log(data)
+        })
+    },
     bindChange(e) {
         let data = {}
         data[e.currentTarget.id] = e.detail.value
@@ -36,9 +60,15 @@ Page({
             count: 1,
             sizeType: ['compressed'],
             sourceType: ['album', 'camera'],
-            success: function (res) {
+            success: (res) => {
+                wx.showLoading({
+                    title: '加载中',
+                })
                 getApp().upload("about/ocr", res.tempFilePaths[0], (data)=>{
-                    console.log(data)
+                    this.setData({
+                        text: JSON.parse(data)["data"]
+                    })
+                    wx.hideLoading()
                 })
             }
         })

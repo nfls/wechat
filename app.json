@@ -3,10 +3,10 @@
     "pages/index/index",
     "pages/user/info",
     "pages/user/login",
-    "pages/school/blackboard",
-    "pages/school/list",
-    "pages/school/pastpaper",
-    "pages/school/search"
+    "pages/blackboard/detail",
+    "pages/blackboard/list",
+    "pages/resource/explorer",
+    "pages/problem/search"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -21,17 +21,17 @@
     "backgroundColor": "#f7f7f8",
     "list": [
       {
-        "pagePath": "pages/school/list",
+        "pagePath": "pages/blackboard/list",
         "text": "黑板"
       }, {
-        "pagePath": "pages/school/pastpaper",
+        "pagePath": "pages/resource/explorer",
         "text": "资源"
       }, {
-        "pagePath": "pages/school/search",
+        "pagePath": "pages/problem/search",
         "text": "搜索"
       }, {
         "pagePath": "pages/user/info",
-        "text": "设置"
+        "text": "个人"
       }
     ]
   }

@@ -47,10 +47,10 @@
                 </view>
             </view>
         </view>
-        <view class="weui-cells__tips">小程序仅能搜索前十个匹配的</view>
+        <view class="weui-cells__tips">图像识别的结果通常不需要自行修改。</view>
 
         <view class="weui-btn-area">
-            <button class="weui-btn" type="primary" bindtap="showTopTips">搜索</button>
+            <button class="weui-btn" type="primary" bindtap="search">搜索</button>
         </view>
     </view>
 </view>
