@@ -6,7 +6,8 @@
     "pages/blackboard/detail",
     "pages/blackboard/list",
     "pages/resource/explorer",
-    "pages/problem/search"
+    "pages/problem/search",
+    "pages/problem/detail"
   ],
   "window": {
     "backgroundTextStyle": "light",

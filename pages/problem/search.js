@@ -33,8 +33,8 @@ Page({
             "page": 1,
             "size": 10
         }
-        getApp().requestWaterAPI("problem/search", data, "POST", (data)=>{
-            console.log(data)
+        wx.navigateTo({
+            url: '/pages/problem/detail?query=' + encodeURIComponent(JSON.stringify(data))
         })
     },
     bindChange(e) {
