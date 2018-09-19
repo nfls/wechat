@@ -9,12 +9,11 @@ Page({
         mdList: []
     },
     onLoad(options) {
-        console.log(options)
+        //console.log(options)
         this.setData({
             id: options.id
         })
         this.detail()
-
     },
     detail() {
         getApp().requestWaterAPI("blackboard/detail?id=" + this.data.id, null, "GET", (data) => {

@@ -1,0 +1,38 @@
+<view style="background-color: #f8f8f8" wx:if="{{detail != null}}">
+    <view class="page__bd">
+        <i-card title="{{detail.title}}" full style="margin: 16px">
+            <view slot="content">
+                <wemark md="{{detail.content}}" type="rich-text"></wemark>
+            </view>
+        </i-card>
+        <view wx:for="{{detail.options}}" wx:for-index="group">
+            <view class="weui-cells__title">{{ item.text }}</view>
+            <view class="weui-cells weui-cells_after-title">
+                <radio-group bindchange="radioChange" id="{{group}}">
+                    <label class="weui-cell weui-check__label" wx:for="{{ item.options }}" wx:for-item="choices" wx:for-index="index">
+                        <radio class="weui-check" value="{{index}}"/>
+
+                        <view class="weui-cell__bd">{{choices}}</view>
+                        <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{options[group] == index}}" >
+                            <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
+                        </view>
+                    </label>
+                </radio-group>
+            </view>
+        </view>
+        <view class="weui-cells__title">密码</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__bd">
+                    <input class="weui-input" bindinput="bindPasswordInput" password placeholder="请输入当前账户的密码" />
+                </view>
+            </view>
+        </view>
+        <view class="weui-btn-area">
+            <button class="weui-btn" type="default" disabled="true" wx:if="{{ !detail.enabled && code === 401 }}">投票已结束，或尚未开始</button>
+            <button class="weui-btn" type="default" disabled="true" wx:elif="{{ detail.enabled && code === 401 }}">您所在的用户组无法投票</button>
+            <button class="weui-btn" type="default" disabled="true" wx:elif="{{ code === 403 }}">您已经投过票了</button>
+            <button class="weui-btn" type="primary" bindtap="submit" wx:else>提交</button>
+        </view>
+    </view>
+</view>

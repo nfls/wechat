@@ -1,14 +1,14 @@
 <!--index.wxml-->
 <view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
     <view class="page__bd">
-        <view class="weui-cells__title">南外人账户登录</view>
+        <view class="weui-cells__title">请使用您的NFLS.IO账户登录</view>
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
                     <view class="weui-label">用户名</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <input class="weui-input" bindinput="bindUsernameInput" placeholder="请输入用户名"/>
+                    <input class="weui-input" bindinput="bindUsernameInput" placeholder="也可以试试邮箱和手机"/>
                 </view>
             </view>
             <view class="weui-cell weui-cell_input">
@@ -16,11 +16,11 @@
                     <view class="weui-label">密码</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <input class="weui-input" bindinput="bindPasswordInput" password placeholder="请输入密码"/>
+                    <input class="weui-input" bindinput="bindPasswordInput" password />
                 </view>
             </view>
         </view>
-        <view class="weui-cells__tips">请使用您的南外人账户登录。登录完成后将于您的微信绑定，下次打开将自动登录。</view>
+        <view class="weui-cells__tips">注册及找回密码请前往网页版https://nfls.io。</view>
 
         <view class="weui-btn-area">
             <button class="weui-btn" type="primary" bindtap="login">登录</button>

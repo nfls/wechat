@@ -3,7 +3,7 @@ Page({
         username: "",
         password: ""
     },
-    login: function () {
+    login: function (e) {
         getApp().requestAPI("user/login", this.data, "POST", function(data) {
             if(data.code !== 200) {
                 wx.showModal({

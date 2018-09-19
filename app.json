@@ -7,13 +7,15 @@
     "pages/blackboard/list",
     "pages/resource/explorer",
     "pages/problem/search",
-    "pages/problem/detail"
+    "pages/problem/detail",
+    "pages/vote/list",
+    "pages/vote/detail"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#f8f8f8",
     "backgroundColor": "#f8f8f8",
-    "navigationBarTitleText": "南外人黑板",
+    "navigationBarTitleText": "NFLSIO",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -30,6 +32,9 @@
       }, {
         "pagePath": "pages/problem/search",
         "text": "搜索"
+      },{
+        "pagePath": "pages/vote/list",
+        "text": "投票"
       }, {
         "pagePath": "pages/user/info",
         "text": "个人"

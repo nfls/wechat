@@ -14,7 +14,17 @@
                 <view class="weui-cell__bd">手机号</view>
                 <view class="weui-cell__ft">{{phone}}</view>
             </view>
+            <view class="weui-cell">
+                <view class="weui-cell__bd">实名状态</view>
+                <view class="weui-cell__ft" wx:if="{{authorized}}">已实名</view>
+                <view class="weui-cell__ft" wx:else>未实名</view>
+            </view>
         </view>
+        <view class="weui-cells__title" wx:if="{{ id != null}}">出门证</view>
+        <view class="weui-cells weui-cells_after-title" wx:if="{{ id != null}}">
+            <canvas canvas-id="canvas" style="margin-top: 10px; margin-bottom: 10px; margin-left: auto; margin-right: auto;"></canvas>
+        </view>
+        <view class="weui-cells__tips"  wx:if="{{ id != null}}">扫描时请调高屏幕亮度，对准红色激光，并保持一定距离。请不要使用iPad。</view>
         <!--
         <view class="page__bd_spacing" style="margin:10px;">
             <button class="weui-btn" type="warn">退出并解除绑定（没用）</button>

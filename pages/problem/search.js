@@ -44,7 +44,7 @@ Page({
         if(e.currentTarget.id === "type") {
             this.filter()
         }
-        console.log(this.data)
+        //console.log(this.data)
     },
     filter() {
         this.setData({
