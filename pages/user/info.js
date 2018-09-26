@@ -37,5 +37,10 @@ Page({
                 })
             })
         })
+    },
+    relogin() {
+        wx.redirectTo({
+            url: '/pages/index/index'
+        })
     }
 })

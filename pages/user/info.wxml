@@ -25,10 +25,8 @@
             <canvas canvas-id="canvas" style="margin-top: 10px; margin-bottom: 10px; margin-left: auto; margin-right: auto;"></canvas>
         </view>
         <view class="weui-cells__tips"  wx:if="{{ id != null}}">扫描时请调高屏幕亮度，对准红色激光，并保持一定距离。请不要使用iPad。</view>
-        <!--
         <view class="page__bd_spacing" style="margin:10px;">
-            <button class="weui-btn" type="warn">退出并解除绑定（没用）</button>
+            <button class="weui-btn" type="warn" bindtap="relogin">修复登录失效</button>
         </view>
-        -->
     </view>
 </view>
