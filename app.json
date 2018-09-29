@@ -32,9 +32,6 @@
       }, {
         "pagePath": "pages/problem/search",
         "text": "搜索"
-      },{
-        "pagePath": "pages/vote/list",
-        "text": "投票"
       }, {
         "pagePath": "pages/user/info",
         "text": "个人"

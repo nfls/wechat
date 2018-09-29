@@ -10,7 +10,7 @@ Page({
                     this.load()
                 } else {
                     wx.showModal({
-                        content: "iOS请使用App“NFLS.IO”进行投票",
+                        content: "iOS请使用App“NFLSIO”进行投票",
                         showCancel: false
                     })
                 }
