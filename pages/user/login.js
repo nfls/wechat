@@ -40,5 +40,15 @@ Page({
         this.setData({
             password: e.detail.value
         })
+    },
+    reset() {
+        wx.navigateTo({
+            url: "/pages/user/reset"
+        })
+    },
+    register() {
+        wx.navigateTo({
+            url: "/pages/user/register"
+        })
     }
 })

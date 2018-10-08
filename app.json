@@ -3,13 +3,16 @@
     "pages/index/index",
     "pages/user/info",
     "pages/user/login",
+    "pages/user/reset",
+    "pages/user/register",
     "pages/blackboard/detail",
     "pages/blackboard/list",
     "pages/resource/explorer",
     "pages/problem/search",
     "pages/problem/detail",
     "pages/vote/list",
-    "pages/vote/detail"
+    "pages/vote/detail",
+    "pages/image/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

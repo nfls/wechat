@@ -113,5 +113,6 @@ App({
             cookie += "PHPSESSID=" + encodeURIComponent(session) + ";"
         }
         return cookie
-    }
+    },
+    params: null
 })

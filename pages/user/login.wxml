@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
     <view class="page__bd">
-        <view class="weui-cells__title">请使用您的NFLS.IO账户登录</view>
+        <view class="weui-cells__title">请使用您的NFLSIO账户登录</view>
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
@@ -20,10 +20,16 @@
                 </view>
             </view>
         </view>
-        <view class="weui-cells__tips">注册及找回密码请前往网页版https://nfls.io。</view>
-
         <view class="weui-btn-area">
             <button class="weui-btn" type="primary" bindtap="login">登录</button>
+        </view>
+
+        <view class="weui-btn-area">
+            <button class="weui-btn" type="normal" bindtap="register">注册</button>
+        </view>
+
+        <view class="weui-btn-area">
+            <button class="weui-btn" type="normal" bindtap="reset">重置密码</button>
         </view>
     </view>
 </view>

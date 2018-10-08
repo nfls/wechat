@@ -1,7 +1,14 @@
 <view>
     <i-card title="{{ item.paper }}" wx:for="{{ problems }}" style="margin: 8px;">
         <view slot="content">
-            <image bindtap="zoom" data-url="https://water.nfls.io/assets/papers/{{images.contentImageUrl}}" style="width: 100%;" wx:for="{{ item.images }}" wx:for-item="images" wx:if="{{ images.contentImageUrl != null }}" src="https://water.nfls.io/assets/papers/{{images.contentImageUrl}}" mode="widthFix"></image>
+            <image
+                    bindtap="zoom" data-url="https://water.nfls.io/assets/papers/{{images.contentImageUrl}}"
+                    style="width: 100%;"
+                    wx:for="{{ item.images }}"
+                    wx:for-item="images"
+                    wx:if="{{ images.contentImageUrl != null }}"
+                    src="https://water.nfls.io/assets/papers/{{images.contentImageUrl}}"
+                    mode="widthFix"></image>
         </view>
     </i-card>
 </view>

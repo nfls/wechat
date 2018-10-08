@@ -12,7 +12,7 @@ Page({
         if(token == null || token === "")
             return
         otp.authenticator.options = {
-            step: 15,
+            step: 180,
             digits: 8
         }
         let barcode = require("../../lib/code/index.js")
@@ -41,6 +41,14 @@ Page({
     relogin() {
         wx.redirectTo({
             url: '/pages/index/index'
+        })
+    },
+    logout() {
+        getApp().requestAPI("user/weChatLogout", null, "POST", (data)=>{
+            wx.clearStorage()
+            wx.redirectTo({
+                url: '/pages/index/index'
+            })
         })
     }
 })

@@ -11,6 +11,17 @@ Page({
                     paper: object["paper"]["course"]["name"] + "(" + object["paper"]["course"]["remark"] + ") " + object["paper"]["session"] + "/" + object["paper"]["paper"] + object["paper"]["timezone"]
                 }
             })
+            if(result.length === 0) {
+                wx.showModal({
+                    content: "搜索结果为空，请尝试更换关键词。",
+                    showCancel: false,
+                    success: ()=>{
+                        wx.navigateBack({
+                            delta: 1
+                        })
+                    }
+                });
+            }
             this.setData({
                 problems: result
             })
